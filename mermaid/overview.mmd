@@ -1,0 +1,28 @@
+graph LR
+    A[Web Crawlers] --> B[Apache Tika] --> C[Post-Processing] --> D[Topic Model Enrollment]
+    D --> E[Jensen-Shannon & <br/> Kullback-Leibler <br/> Divergence Scores] 
+    E --> F[Unsupervised <br/> Clustering]
+    F --> C 
+    F --> D
+
+    subgraph Ingest Pipeline
+        A
+        B
+    end
+
+    subgraph Topic Model
+        D[Topic Model Enrollment <br/> PostgreSQL <br/> with pgvector]
+        E[Jensen-Shannon & <br/> Kullback-Leibler <br/> Divergence Scores <br/> PostgreSQL <br/> with pgvector]
+    end
+
+    subgraph Eviction Cache
+        C[Post-Processing <br/> Redis]
+        F[Unsupervised <br/> Clustering]
+    end
+
+    subgraph Data Storage
+        G[Raw Crawled Data <br/> ZFS on 2.5TB] 
+        H[Processed Documents <br/> Parquet on 2.5TB]
+        I[Topic Model Outputs <br/> PostgreSQL <br/> with pgvector]
+        J[Cluster Assignments <br/> PostgreSQL]
+    end
