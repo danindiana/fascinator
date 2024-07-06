@@ -1,0 +1,57 @@
+graph LR
+    subgraph Ingest Pipeline
+        A[Web Crawlers <br/> Python, Scrapy] --> B[Apache Tika <br/> Java] --> C[Post-Processing <br/> Python, pandas, Redis]
+    end
+
+    subgraph Topic Model
+        D[Topic Model Enrollment <br/> Python, scikit-learn, gensim <br/> PostgreSQL <br/> with pgvector] --> E[Jensen-Shannon & <br/> Kullback-Leibler <br/> Divergence Scores <br/> Python, NumPy, SciPy <br/> PostgreSQL <br/> with pgvector]
+    end
+
+    subgraph Eviction Cache
+        C --> F[Unsupervised <br/> Clustering <br/> Python, scikit-learn <br/> PostgreSQL]
+        E --> G[Novelty <br/> Scoring <br/> Python] --> F
+    end
+
+    subgraph Reinforcement Learning Agent
+        subgraph Episodic Learning Loop
+            AA[Start] --> BB[Initialize Environment]
+            BB --> CC[Initialize Agent <br/> Python, TensorFlow/PyTorch]
+            CC --> DD[Initialize ICM <br/> Python, TensorFlow/PyTorch]
+            DD --> EE[Episode Loop]
+            EE --> FF[State Loop]
+            FF --> GG[Agent Selects Action]
+            GG --> HH[Environment Steps]
+            HH --> II[Compute Intrinsic Reward ICM]
+            II --> JJ[Compute Total Reward]
+            JJ --> KK[Agent Trains]
+            KK --> LL[Update State]
+            LL --> FF
+            EE --> MM[End Episode]
+            MM --> EE
+        end
+
+        subgraph Interaction
+            GG -.-> C
+            HH -.-> A
+            KK -.-> D
+            LL -.-> C
+            HH -.-> I
+            II -.-> E
+        end
+    end
+
+    subgraph Data Storage
+        I[Raw Crawled Data <br/> ZFS on 2.5TB]
+        J[Processed Documents <br/> Parquet on 2.5TB]
+        K[Topic Model Outputs <br/> PostgreSQL <br/> with pgvector]
+        L[Cluster Assignments <br/> PostgreSQL]
+    end
+
+    subgraph Monitoring & Feedback
+        H[Monitoring & <br/> Feedback <br/> Python, Prometheus/Grafana, etc.] --> C
+        H --> D
+        H --> F
+    end
+
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style H fill:#ccf,stroke:#333,stroke-width:2px
