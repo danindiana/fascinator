@@ -42,46 +42,4 @@ project_root/
 │   ├── raw/        # ZFS-formatted for raw crawled data
 │   ├── processed/  # Parquet-formatted for processed documents
 │   └── postgresql/  # PostgreSQL data directory (including pgvector extension)
-
-
-
-
-
 🌟∇🌍∇🧠∇🌡️
-____________/____________
-/        |          |        \
-/   ∫C   |    ∫T   |    ∫P   \
-|         |    I     |  ∫D     |
-|   1     |    K     |   2     |
-|________|__________|________|
- \        /           \
-   \      /             /
-    \    /               \
-     \ /                 \
-      |__________________|
-    [Data Capture]       [Processing] 
-      |               |      |
-      |______________|_____|
-      |   ∫T         |   ∫D  |
-      |   ∫M         |   ∫O  |
-      |   ∫O         |   ∫D  |
-      |   ∫D         |   ∫Y  |
-      |______________|___|
-      [Topic Models]    [Divergence Scores]
-      |_______________|______________
-      |   d/dt          |   J-S & K-L    |
-      |   ∂/∂x          |   ∂/∂x        |
-      |   ∇             |   ∇            |
-      |   ∂/∂x          |   ∂/∂x        |
-      |   ∂/∂t          |   ∂/∂t        |
-      |   ∂/∂x          |   ∂/∂x        |
-      |   d/dx          |   d/dx        |
-      |______________|______________
-      [Clustering]
-      |_______________|
-      |   ∇            |
-      |   ∇            |
-      |   ∇            |
-      |   ∇            |
-      |   ∇            |
-      |______________|
