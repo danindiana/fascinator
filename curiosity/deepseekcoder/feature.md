@@ -1,3 +1,4 @@
+
 Feature Engineering
 Feature Extraction:
 Finalize and test feature extraction scripts.
@@ -801,3 +802,33 @@ To implement the monitoring and feedback system using Prometheus and Grafana, fo
    - Ensure that the email configuration is correct and check your inbox for the alert email.
 
 By following these steps, you will have a fully functional monitoring and feedback system using Prometheus and Grafana, with alerting mechanisms in place for system failures and performance degradation.
+
+
+
+```mermaid
+graph TD
+    A[Start] --> B[Set Up Prometheus and Grafana]
+    B --> C[Configure Prometheus]
+    C --> D[Start Prometheus]
+    D --> E[Install Grafana]
+    E --> F[Start Grafana]
+    F --> G[Access Grafana]
+    G --> H[Add Prometheus as Data Source]
+    H --> I[Create New Dashboard]
+    I --> J[Add Pipeline Performance Panel]
+    I --> K[Add Data Quality Panel]
+    I --> L[Add Agent Behavior Panel]
+    L --> M[Configure Alerting in Prometheus]
+    M --> N[Create Alerting Rules]
+    N --> O[Install Alertmanager]
+    O --> P[Configure Alertmanager]
+    P --> Q[Start Alertmanager]
+    Q --> R[Integrate Alertmanager with Prometheus]
+    R --> S[Restart Prometheus]
+    S --> T[Test Alerting Mechanism]
+    T --> U[Simulate an Alert]
+    U --> V[Check Alertmanager UI]
+    V --> W[Receive an Email]
+    W --> X[End]
+```
+
