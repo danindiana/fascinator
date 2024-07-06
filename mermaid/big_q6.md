@@ -43,8 +43,8 @@ graph LR
     end
 
     subgraph Data Storage
-        I[Raw Crawled Data <br/> ZFS on 2.5TB]
-        J[Processed Documents <br/> Parquet on 2.5TB]
+        I[Raw Crawled Data <br/> ZFS on 2.0TB]
+        J[Processed Documents <br/> Parquet on 2.0TB]
         K[Topic Model Outputs <br/> PostgreSQL <br/> with pgvector]
         L[Cluster Assignments <br/> PostgreSQL]
     end
