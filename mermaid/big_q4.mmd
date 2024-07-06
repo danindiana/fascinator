@@ -1,0 +1,55 @@
+graph LR
+    subgraph Ingest Pipeline
+        A[Web Crawlers & URL Features] --> B[Topic Model Clusterer] --> C[Post-Processing & Cache]
+        D[Eviction Cache Unsupervised] --> C
+    end
+
+    subgraph Topic Model
+        B[Clusterer] --> D[Topic Model Outputs]
+    end
+
+    subgraph Unsupervised Learning
+        D[Cluster Manager] --> E[Cluster Analysis & Feature Extraction]
+        E --> F[Eviction Mechanism]
+        F --> G[Cluster Suggestions for Web Crawling]
+    end
+
+    subgraph Reinforcement Learning Agent
+        subgraph Episodic Learning Loop
+            AA[Start] --> BB[Initialize Environment]
+            BB --> CC[Initialize Agent]
+            CC --> DD[ICM + Cluster Suggestions]
+            DD --> EE[Episode Loop]
+            EE --> FF[State Loop]
+            FF --> GG[Action Selection]
+            GG --> HH[Environment Steps]
+            HH --> II[Feedback & Reward]
+            II --> JJ[Train Agent]
+            JJ --> KK[Update State]
+            KK --> FF
+            EE --> MM[End Episode]
+            MM --> EE
+        end
+
+        subgraph Interaction
+            GG -.-> C
+            HH -.-> A
+            II -.-> D & G
+        end
+    end
+
+    subgraph Data Storage
+        I[Raw Crawled Data] --> J[Processed Documents]
+        K[Topic Model Outputs Clustering] --> L[Cluster Assignments]
+    end
+
+    subgraph Monitoring & Feedback
+        H[Monitoring & Feedback] --> C; D; G;
+    end
+
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style H fill:#ccf,stroke:#333,stroke-width:2px
+    style D fill:#c7d,stroke:#333,stroke-width:2px
+    style E fill:#d9e,stroke:#333,stroke-width:2px
+    style F fill:#ebe,stroke:#333,stroke-width:2px
+    style G fill:#f2f,stroke:#333,stroke-width:2px
