@@ -193,3 +193,51 @@ Building a complex system like this involves several stages and requires careful
 - Iterate on the design and implementation as needed based on feedback and performance testing.
 
 Remember that building a complex system like this can take time, and it's crucial to break down your project into smaller, manageable steps. Also, don't forget to document your code and configurations for future reference and maintenance.
+
+
+To install ZFS on Ubuntu, you'll typically do it on the base operating system as it's a native file system and not a container technology. Here's a step-by-step guide for Ubuntu 18.04 and later (since ZFS is not included by default in newer releases):
+
+1. **Upgrade your system**: First, update your system to the latest version:
+```
+sudo apt update
+sudo apt upgrade
+```
+2. **Install the required packages**: ZFS depends on the `zfsutils` and `zpool` packages. Install them:
+```
+sudo apt install zfsutils-zpool
+```
+3. **Check ZFS support**: Make sure the kernel supports ZFS:
+```
+sudo apt-get install -y kernel-package-utils
+sudo zpool version
+```
+4. **Upgrade the kernel if needed**: If the kernel doesn't support ZFS yet, you may need to update it. For example, if you're running a 5.4 kernel, you can use the following command:
+```
+sudo apt-get install linux-generic-lts-bionic
+```
+5. **Create a ZFS pool**: Create a new ZFS pool for data storage, using an available disk or a specific partition. For example, create a pool on the first available device:
+```
+sudo zpool create myzpool /dev/sda1 /dev/sdb1
+```
+Replace `/dev/sda1` and `/dev/sdb1` with your actual disk or partition paths.
+
+6. **Format the ZFS pool**: Format the pool with the default file system type (e.g., ext4 or btrfs):
+```
+sudo zpool set filesystem=ext4 myzpool
+```
+7. **Mount the ZFS pool**: Mount the ZFS pool as a mount point:
+```
+sudo mkdir /mnt/myzpool
+sudo zpool mount myzpool /mnt/myzpool
+```
+8. **Set up automatic snapshots (optional)**: To take regular snapshots, install the `zfs-snapshots` package:
+```
+sudo apt install zfs-snapshots
+```
+9. **Verify the installation**: Check the status of the pool and verify the file systems:
+```
+sudo zpool status
+sudo df -hT /mnt/myzpool
+```
+
+Now you have ZFS installed on your Ubuntu system. If you're working inside a Nvidia-docker container, you would need to mount the ZFS pool within the container. However, since the container is a separate environment, you would typically not install ZFS directly inside it but rather use the host's ZFS pool. To do this, you would ensure your Docker configuration allows access to the ZFS pool, or you could mount it as a volume in the container.
