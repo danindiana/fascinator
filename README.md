@@ -1,29 +1,6 @@
 # fascinator
 An advanced data processing and clustering solution utilizing web crawling, natural language processing, machine learning, and database management.
 
-🌟  🌍  🤖  🌞  💡  🔍  📝  🧠  🌡️  🌲
-___________________/___________________
-/            |            /              \
-/      Web Crawlers   |   Apache Tika   |     Post Processing   /
-|________________|______________|___________________/
-/   🌟 Data Capture   |      🧠 Processing   |    🌳 Storage       /
-|________________|__________________|___________________/
-/       🌳 to 📋       |         🧠 to 🤖      |    🤖 to 🤝       /
-/________________|__________________|___________________/
-|   🗂️ Topic Models   |  🏋️‍♂️ Divergence Scores   |   🧠 Clustering   /
-|________________|________________|___________________/
-__________________|___________________
-|     📊 Reports     |      🚀 Recommendations    |
-|_____________________|
-____________________/
-|  🚀 Monitoring & Alerts  |
-________________________
-|     🕵️‍♂️ System Health  |
-|     🗺️ Trends & Insights  |
-____________________________
-
-🚀  🌠  🌱  🧠  🌲  🕳️  🚀
-
 project_root/
 ├── crawlers/       # Your existing web crawlers 
 ├── ingest/
@@ -42,4 +19,3 @@ project_root/
 │   ├── raw/        # ZFS-formatted for raw crawled data
 │   ├── processed/  # Parquet-formatted for processed documents
 │   └── postgresql/  # PostgreSQL data directory (including pgvector extension)
-🌟∇🌍∇🧠∇🌡️
