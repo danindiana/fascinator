@@ -1,3 +1,4 @@
+```mermaid
 graph TD
     A[Start] --> B[Initialize Environment]
     B --> C[Initialize Agent]
@@ -13,3 +14,4 @@ graph TD
     L --> F
     E --> M[End Episode]
     M --> E
+```
