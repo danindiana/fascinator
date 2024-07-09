@@ -173,3 +173,134 @@ graph LR
     style J fill:#adf,stroke:#333,stroke-width:4px
     style K fill:#fda,stroke:#333,stroke-width:4px
 ```
+
+# ICM Model Design
+
+## 2.1. Architecture
+
+### Forward Model
+The forward model in the ICM architecture is designed to predict the next state based on the current state and action. This model helps in understanding the dynamics of the environment by estimating the state transitions.
+
+- **Inputs**:
+  - **Current State (S_t)**: The representation of the current state.
+  - **Action (A_t)**: The action taken at the current state.
+- **Output**:
+  - **Next State (S_{t+1})**: The predicted next state.
+
+The forward model is trained to minimize the prediction error, which is the difference between the actual next state and the predicted next state. This error serves as an intrinsic reward to encourage exploration in reinforcement learning.
+
+### Inverse Model
+The inverse model predicts the action taken given the current and next state. This model helps the agent to infer the action needed to transition from one state to another, thereby understanding the relationship between states and actions.
+
+- **Inputs**:
+  - **Current State (S_t)**: The representation of the current state.
+  - **Next State (S_{t+1})**: The representation of the next state.
+- **Output**:
+  - **Action (A_t)**: The predicted action that caused the transition from the current state to the next state.
+
+The inverse model is trained to minimize the classification error between the predicted action and the actual action taken.
+
+## 2.2. Network Design
+
+### Neural Networks
+The neural networks for the forward and inverse models are implemented using PyTorch or TensorFlow. These frameworks provide robust libraries and tools for building and training deep learning models.
+
+#### Forward Model Network
+- **Input Layer**: Concatenation of the current state and action.
+- **Hidden Layers**: Multiple fully connected (dense) layers with activation functions (e.g., ReLU).
+- **Output Layer**: A layer producing the predicted next state.
+
+#### Inverse Model Network
+- **Input Layer**: Concatenation of the current state and next state.
+- **Hidden Layers**: Multiple fully connected (dense) layers with activation functions (e.g., ReLU).
+- **Output Layer**: A layer producing the predicted action (e.g., softmax activation for discrete actions).
+
+### Feature Extractors
+Feature extraction is a critical step in processing the raw state representations before feeding them into the neural networks. Convolutional Neural Networks (CNNs) are employed for this purpose due to their ability to capture spatial hierarchies in data, making them ideal for extracting features from image-based state representations.
+
+#### CNN Architecture for Feature Extraction
+- **Input Layer**: Raw state representation (e.g., images).
+- **Convolutional Layers**: Multiple layers of convolutions with varying filter sizes to capture different features.
+- **Pooling Layers**: Max pooling or average pooling layers to reduce the spatial dimensions and computational load.
+- **Fully Connected Layers**: Dense layers to further process the features extracted by the convolutional layers.
+- **Output Layer**: Feature vector representing the processed state.
+
+The extracted features are then used as inputs to the forward and inverse models, providing a richer representation of the states, which enhances the prediction accuracy.
+
+### Implementation Example
+
+#### Forward Model Network (PyTorch)
+```python
+import torch
+import torch.nn as nn
+import torch.optim as optim
+
+class ForwardModel(nn.Module):
+    def __init__(self, state_dim, action_dim, hidden_dim):
+        super(ForwardModel, self).__init__()
+        self.fc1 = nn.Linear(state_dim + action_dim, hidden_dim)
+        self.fc2 = nn.Linear(hidden_dim, hidden_dim)
+        self.fc3 = nn.Linear(hidden_dim, state_dim)
+
+    def forward(self, state, action):
+        x = torch.cat([state, action], dim=1)
+        x = torch.relu(self.fc1(x))
+        x = torch.relu(self.fc2(x))
+        next_state = self.fc3(x)
+        return next_state
+
+state_dim = 100  # Example state dimension
+action_dim = 10  # Example action dimension
+hidden_dim = 128
+
+forward_model = ForwardModel(state_dim, action_dim, hidden_dim)
+optimizer = optim.Adam(forward_model.parameters(), lr=0.001)
+loss_fn = nn.MSELoss()
+```
+
+#### Inverse Model Network (PyTorch)
+```python
+class InverseModel(nn.Module):
+    def __init__(self, state_dim, action_dim, hidden_dim):
+        super(InverseModel, self).__init__()
+        self.fc1 = nn.Linear(state_dim * 2, hidden_dim)
+        self.fc2 = nn.Linear(hidden_dim, hidden_dim)
+        self.fc3 = nn.Linear(hidden_dim, action_dim)
+
+    def forward(self, state, next_state):
+        x = torch.cat([state, next_state], dim=1)
+        x = torch.relu(self.fc1(x))
+        x = torch.relu(self.fc2(x))
+        action_pred = torch.softmax(self.fc3(x), dim=1)
+        return action_pred
+
+inverse_model = InverseModel(state_dim, action_dim, hidden_dim)
+optimizer = optim.Adam(inverse_model.parameters(), lr=0.001)
+loss_fn = nn.CrossEntropyLoss()
+```
+
+### Feature Extractor using CNN (PyTorch)
+```python
+class FeatureExtractor(nn.Module):
+    def __init__(self, input_channels, feature_dim):
+        super(FeatureExtractor, self).__init__()
+        self.conv1 = nn.Conv2d(input_channels, 32, kernel_size=3, stride=1, padding=1)
+        self.conv2 = nn.Conv2d(32, 64, kernel_size=3, stride=1, padding=1)
+        self.pool = nn.MaxPool2d(kernel_size=2, stride=2, padding=0)
+        self.fc1 = nn.Linear(64 * 8 * 8, feature_dim)  # Example dimensions
+
+    def forward(self, x):
+        x = self.pool(torch.relu(self.conv1(x)))
+        x = self.pool(torch.relu(self.conv2(x)))
+        x = x.view(-1, 64 * 8 * 8)  # Flattening
+        feature_vector = torch.relu(self.fc1(x))
+        return feature_vector
+
+input_channels = 3  # Example for RGB images
+feature_dim = 100   # Example feature dimension
+
+feature_extractor = FeatureExtractor(input_channels, feature_dim)
+```
+
+## Conclusion
+The forward and inverse models in the ICM architecture are essential components for providing intrinsic rewards and facilitating efficient learning. By employing CNNs for feature extraction and leveraging deep neural networks, the ICM can effectively predict state transitions and actions, driving the exploration and learning capabilities of our RL agents. The detailed architecture and network designs provided above form the foundation for implementing a robust and scalable ICM module within our existing machine learning framework.
