@@ -74,6 +74,36 @@ Using Rust, Go, and Node.js for web crawlers in the ingest pipeline offers sever
    - **Rust**: Its compiler and ownership model ensure memory safety and thread safety, reducing the number of runtime errors and making the crawlers more reliable.
    - **Go**: Designed with simplicity and reliability in mind, Go's standard library and tooling provide a solid foundation for building dependable services.
 
+```mermaid
+mindmap
+  root((Ingest Pipeline))
+    A1[Rust Crawler <br/> Rust]
+      A1 --> B[Apache Tika <br/> Java]
+        B --> C[Post-Processing <br/> Python, pandas, Redis]
+          C --> D[Topic Model & Novelty Scoring <br/> Python, scikit-learn, gensim, NumPy, SciPy <br/> PostgreSQL with pgvector]
+            D --> E[Unsupervised Clustering <br/> Python, scikit-learn <br/> PostgreSQL]
+              E --> F[Reinforcement Learning Agent <br/> Python, TensorFlow/PyTorch]
+                F --> G[ICM Module <br/> Python, TensorFlow/PyTorch]
+                  G --> H[Data Storage <br/> ZFS/Parquet on 2.0TB <br/> PostgreSQL with pgvector]
+                    H --> I[Monitoring & Feedback <br/> Python, Prometheus/Grafana]
+                      I --> A1
+                      I --> A2[Go Crawler <br/> Go]
+                        A2 --> B
+                      I --> A3[Nodejs Crawler <br/> Node.js]
+                        A3 --> B
+                      I --> D
+                      I --> E
+                  G --> J[Basilisk RAG <br/> Large Language Model]
+                    J --> H
+                  G --> K[Harpsichord <br/> Apache Tinkerpop <br/> Graph Computing]
+                    K --> J
+                    K --> H
+                  G -. Influence Crawling .-> A1
+                  G -. Influence Crawling .-> A2
+                  G -. Influence Crawling .-> A3
+                  G -. Smart Eviction .-> H
+```
+
 6. **Cross-Platform Compatibility**:
    - All three languages compile to native code and support cross-platform development, allowing the crawlers to run on various operating systems without significant changes to the codebase.
 
