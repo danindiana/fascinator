@@ -1,3 +1,5 @@
+https://ssd.userbenchmark.com/Samsung-990-Pro-M2-2TB/Rating/4161
+
 To benchmark the SAMSUNG SSD 990 PRO 2TB, PCIe 4.0 M.2 2280 with sequential read speeds up to 7,450MB/s on an Ubuntu 22.04 server, we can create a C++ program that measures the time taken to read a large file from the SSD. This program will perform the following steps:
 
 1. **Preparation**: Generate a large test file on the SSD to be used for the benchmark. The size of this file should be significant enough (e.g., several GBs) to accurately measure read speeds and account for any caching effects.
