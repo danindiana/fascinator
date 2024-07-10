@@ -1,0 +1,31 @@
+import tensorflow as tf
+from tensorflow.keras.models import Model
+from tensorflow.keras.layers import Input, Dense, Dropout
+
+class ICM(Model):
+    def __init__(self, input_dim, hidden_dim, output_dim):
+        super(ICM, self).__init__()
+        self.input_layer = Input(shape=(input_dim,))
+        self.dense1 = Dense(hidden_dim, activation='relu')
+        self.dropout = Dropout(0.5)
+        self.dense2 = Dense(output_dim, activation='sigmoid')
+        
+        self.model = Model(inputs=self.input_layer, outputs=self.dense2(self.dropout(self.dense1(self.input_layer))))
+    
+    def call(self, inputs):
+        return self.model(inputs)
+
+# Example usage
+input_dim = 100  # Dimension of the input embeddings
+hidden_dim = 64  # Number of neurons in the hidden layer
+output_dim = 1  # Output dimension for curiosity signals
+
+icm = ICM(input_dim, hidden_dim, output_dim)
+icm.compile(optimizer='adam', loss='binary_crossentropy')
+
+# Dummy data for training
+import numpy as np
+x_train = np.random.rand(1000, input_dim)
+y_train = np.random.randint(2, size=(1000, 1))
+
+icm.fit(x_train, y_train, epochs=10, batch_size=32)
